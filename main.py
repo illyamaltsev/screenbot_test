@@ -23,7 +23,7 @@ def respond_screenshot(message, url, js_delay='0'):
             path = Screener.do_screen_by_url(url, js_delay)
         except OSError as e:
             logging.error(e)
-            bot.send_message(message.from_user.id, 'Bad URL...\nPlease correct and try again...')
+            bot.send_message(message.from_user.id, 'Bad URL or something wrong...\nPlease correct and try again...')
             return
 
         storage.save_file_path(url, path)
@@ -36,9 +36,9 @@ def respond_screenshot(message, url, js_delay='0'):
 
 @bot.message_handler(commands=['start', 'help'])
 def handle_start(message):
-    bot.send_message(message.from_user.id, "Hello, this bot can do screenshot by url\n"
-                                           "Just send valid url to me as text\n"
-                                           "Also if your site using lazy loading you can send url and "
+    bot.send_message(message.from_user.id, "Hello, I can do a screenshot by url\n"
+                                           "Just send me a valid url as a text\n"
+                                           "Also if the website uses lazy loading you can send url and "
                                            "JavaScript loading delay to handle this case using command:\n"
                                            "<code>/js_delay delay_in_sec url</code>", parse_mode='HTML')
 
@@ -48,7 +48,7 @@ def handle_js_delay(message):
     splited = message.text.split()
 
     if len(splited) == 3 and splited[1].isdigit():
-        command, delay, url = message.text.split()
+        command, delay, url = splited
         respond_screenshot(message, url, js_delay=delay)
     else:
         bot.reply_to(message, "Wrong command usage.\nRead /help")
