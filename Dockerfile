@@ -12,13 +12,6 @@ RUN pip install --upgrade pip
 # install pakages
 RUN pip install imgkit telebot pytelegrambotapi python-dotenv
 
-
 ADD . /
 
-RUN ls
-
 CMD [ "python", "./main.py" ]
-
-
-
-
