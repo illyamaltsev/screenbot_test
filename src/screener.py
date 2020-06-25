@@ -1,11 +1,8 @@
-from _sha256 import sha256
+from _md5 import md5
 
 import requests
 import imgkit
 
-
-class UrlDoesNotExist(Exception):
-    pass
 
 
 class Screener:
@@ -15,18 +12,11 @@ class Screener:
         return str(html_text)
 
     @staticmethod
-    def do_screen_by_url(url: str):
+    def do_screen_by_url(url: str, js_delay=0):
 
-        try:
-            response = requests.get(url)
-        except requests.ConnectionError as exception:
-            raise UrlDoesNotExist
+        path = md5(url.encode()).hexdigest() + '.png'
 
-        ready_html = Screener.__prepare_html(response.content)
-
-        path = sha256(url.encode()).hexdigest() + '.png'
-
-        options = {'format': 'png', 'width': '1920'}
+        options = {'format': 'png', 'width': '1920', 'javascript-delay': js_delay}
 
         imgkit.from_url(url, path, options=options)
 
